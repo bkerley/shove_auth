@@ -57,6 +57,3 @@ Logging in
   * On a 400 or 403, discard the session and nonce, and let the user know they suck
 * Allow the user to perform their normal tasks
 
-User management
----------------
-
