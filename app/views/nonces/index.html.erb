@@ -2,16 +2,16 @@
 
 <table>
   <tr>
-    <th>Nonce</th>
+	  <th>State</th>
+    <th>Nonce or User</th>
     <th>Sid</th>
-    <th>User</th>
   </tr>
 
 <% for nonce in @nonces %>
   <tr>
-    <td><%=h nonce.nonce %></td>
+	  <td><%=h nonce.state %></td>
+    <td><%=h nonce.account ? nonce.account.username : nonce.nonce %></td>
     <td><%=h nonce.sid %></td>
-    <td><%=h nonce.user_id %></td>
     <td><%= link_to 'Destroy', nonce, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
