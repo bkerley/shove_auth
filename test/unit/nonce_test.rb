@@ -6,6 +6,8 @@ class NonceTest < ActiveSupport::TestCase
   end
   
   def test_creation_generators
+    assert_not_nil @n.nonce
+    assert_not_nil @n.sid
     assert_not_equal @n.nonce, ''
     assert_not_equal @n.sid, ''
   end
