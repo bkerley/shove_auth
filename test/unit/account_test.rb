@@ -16,6 +16,7 @@ class AccountTest < ActiveSupport::TestCase
     myhash = "jK+2mdV5UlqMcoet5RmsqejZ7Gs="
     assert_equal Account.digest('bkerley', 'butt'), myhash
     assert_equal @account.digest, myhash
+    assert @account.check_password('butt')
     assert @account.check_digest(myhash)
   end
 end
