@@ -1,6 +1,6 @@
 class Nonce < ActiveRecord::Base
   before_create :creation_generator
-  belongs_to :user
+  belongs_to :account, :foreign_key => :user_id
   
   # create-time methods
   
