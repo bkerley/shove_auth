@@ -1,8 +1,12 @@
 require 'test_helper'
 
 class NonceTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  def test_truth
-    assert true
+  def setup
+    @n = Nonce.new
+  end
+  
+  def test_creation_generators
+    assert_not_equal @n.nonce, ''
+    assert_not_equal @n.sid, ''
   end
 end
