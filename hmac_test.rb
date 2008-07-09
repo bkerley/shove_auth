@@ -6,8 +6,8 @@ vectors = [
 ]
 vectors.each do |v|
   d = OpenSSL::Digest::Digest.new('SHA1')
-  k = v[:k]
+  k = v[:k].map{|e|e.chr}.join('')
   t = v[:t]
   c = v[:c]
-  puts OpenSSL::HMAC.hexdigest(d, k.map{|e|e.chr}.join(''), t) == c
+  puts (OpenSSL::HMAC.hexdigest(d, k, t) == c)
 end
