@@ -20,25 +20,26 @@ Concepts and variables
 	* the action (for example, `GET /user/username`)
 	* the current sid (even if this is already included in the action URL)
 	* any arguments (such as the password for update user)
+	* the output of the hmac function is passed as the hmac request parameter
 
 REST protocol
 -------------
 
 * Session management:
   * Create session: `POST /session/new` - returns the nonce and sid
-  * Update session: `PUT /session/sid` username, hmac(auth_secret, `PUT /session/sid nonce`)
-		* 200 OK - successful authentication, includes session_secret
+  * Update session: `PUT /session/sid` username, hmac(auth\_secret, `PUT /session/sid nonce`)
+		* 200 OK - successful authentication, includes session\_secret
 		* 400 Bad Request - malformed request
 		* 403 Forbidden - failed authentication
-  * Show session: `GET /session/sid` hmac(session_secret, `GET /session/sid sid`)
+  * Show session: `GET /session/sid` hmac(session\_secret, `GET /session/sid sid`)
 		* 404 Not Found - no session with this sid
 		* 403 Forbidden - session not authenticated
 		* 200 OK - return session secret 
 * User management, returns 403 when provided session doesn't have permissions
-  * Show user: `GET /user/username` sid, hmac(session_secret, `GET /user/username sid`) - show username, time and client of last login(s)
-  * Update user: `PUT /user/username` sid, password, hmac(session_secret, `PUT /user/username sid password`) - set password
-  * Destroy user: `DELETE /user/username` sid, hmac(session_secret, `DELETE /user/username sid`) - delete said user
-  * Create user: `POST /user/username` sid, hmac(session_secret, `POST /user/username sid`) - create user with specified name
+  * Show user: `GET /user/username` sid, hmac(session\_secret, `GET /user/username sid`) - show username, time and client of last login(s)
+  * Update user: `PUT /user/username` sid, password, hmac(session\_secret, `PUT /user/username sid password`) - set password
+  * Destroy user: `DELETE /user/username` sid, hmac(session\_secret, `DELETE /user/username sid`) - delete said user
+  * Create user: `POST /user/username` sid, hmac(session\_secret, `POST /user/username sid`) - create user with specified name
 
 Protocol security
 -----------------
