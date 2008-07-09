@@ -11,8 +11,9 @@ uses.
 
 Concepts and variables
 ----------------------
-* secret - sha1(username+pass) expressed in base64
-* sid - session_id, 768359313 as example, not constrained to integers (use a varchar type)
+* auth_secret - sha1(username+pass) expressed in base64
+* session_secret - unique per session, keyed to particular client
+* sid - session_id, probably a big base64-encoded string (base64 looks cool)
 * signed request - requests relying on authentication should include a signature consisting of:
 	* the action (for example, `GET /user/username`)
 	* the current sid (even if this is already included in the action URL)
@@ -22,17 +23,20 @@ REST protocol
 -------------
 
 * Session management:
-  * Create session: `POST /session/new` - returns the nonce and session\_id (example session\_id: sid)
-  * Update session: `PUT /session/sid` username, hmac(sha1(username+pass), nonce)
-    * 303 See Other & redirect to show session - successful authentication
+  * Create session: `POST /session/new` - returns the nonce and sid
+  * Update session: `PUT /session/sid` username, hmac(sha1(auth_secret), `PUT /session/sid nonce`)
+    * 200 OK - successful authentication, includes session_secret
     * 400 Bad Request - malformed request
     * 403 Forbidden - failed authentication
-  * Show session: `GET /session/sid` hmac(secret, 'GET /session/sid sid') - show if session is invalid, waiting, or authenticated
+  * Show session: `GET /session/sid` hmac(session_secret, `GET /session/sid sid`)
+		* 404 Not Found - no session with this sid
+		* 403 Forbidden - session not authenticated
+		* 200 OK - return session secret 
 * User management, returns 403 when provided session doesn't have permissions
-  * Show user: `GET /user/username` sid, hmac(secret, 'GET /user/username sid') - show username, time and client of last login(s)
-  * Update user: `PUT /user/username` sid, password, hmac(secret, 'PUT /user/username sid password') - set password
-  * Destroy user: `DELETE /user/username` sid, hmac(secret, 'DELETE /user/username sid') - delete said user
-  * Create user: `POST /user/username` sid, hmac(secret, 'POST /user/username sid') - create user with specified name
+  * Show user: `GET /user/username` sid, hmac(session_secret, `GET /user/username sid`) - show username, time and client of last login(s)
+  * Update user: `PUT /user/username` sid, password, hmac(session_secret, `PUT /user/username sid password`) - set password
+  * Destroy user: `DELETE /user/username` sid, hmac(session_secret, `DELETE /user/username sid`) - delete said user
+  * Create user: `POST /user/username` sid, hmac(session_secret, `POST /user/username sid`) - create user with specified name
 
 Logging in
 ----------
@@ -42,3 +46,6 @@ Logging in
 * Update the session with username and hmac from hashed password and nonce
   * On a 400 or 403, discard the session and nonce, and let the user know they suck
 * Allow the user to perform their normal tasks
+
+User management
+---------------
