@@ -7,3 +7,7 @@ one:
 two:
   username: MyString
   digest: MyString
+
+bryce:
+  username: bryce
+  digest: tEvbLXKs+VKqOYf3r4jqVzyrQZE=
