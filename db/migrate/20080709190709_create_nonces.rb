@@ -3,7 +3,7 @@ class CreateNonces < ActiveRecord::Migration
     create_table :nonces do |t|
       t.string :nonce
       t.string :sid
-      t.reference :user_id
+      t.integer :user_id
 
       t.timestamps
     end
