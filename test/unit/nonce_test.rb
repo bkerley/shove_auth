@@ -23,7 +23,9 @@ class NonceTest < ActiveSupport::TestCase
     user = Account.find_by_username 'bryce'
     message = "PUT /session/#{sid} #{nonce}"
     secret = user.digest
-    hmac = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('SHA1'), secret, message)
-    assert_equal Nonce.load_user(sid, user.username, hmac), user
+    hmac = Nonce.hmac(secret, message)
+    result = Nonce.load_user(sid, user.username, hmac)
+    assert result
+    assert_equal result.id, user.id
   end
 end
