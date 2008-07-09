@@ -11,6 +11,8 @@ uses.
 
 Concepts and variables
 ----------------------
+* server - the system running shove_auth
+* client - an application acting on behalf of a user; in our case, the push2 webapp
 * auth_secret - sha1(username+pass) expressed in base64
 * session_secret - unique per session, keyed to particular client
 * sid - session_id, probably a big base64-encoded string (base64 looks cool)
@@ -24,7 +26,7 @@ REST protocol
 
 * Session management:
   * Create session: `POST /session/new` - returns the nonce and sid
-  * Update session: `PUT /session/sid` username, hmac(sha1(auth_secret), `PUT /session/sid nonce`)
+  * Update session: `PUT /session/sid` username, hmac(auth_secret, `PUT /session/sid nonce`)
     * 200 OK - successful authentication, includes session_secret
     * 400 Bad Request - malformed request
     * 403 Forbidden - failed authentication
@@ -38,6 +40,14 @@ REST protocol
   * Destroy user: `DELETE /user/username` sid, hmac(session_secret, `DELETE /user/username sid`) - delete said user
   * Create user: `POST /user/username` sid, hmac(session_secret, `POST /user/username sid`) - create user with specified name
 
+Protocol security
+-----------------
+
+The session\_secret is used instead of the auth\_secret for maintenance of the session, since it must have a short lifetime,
+preferably 24 idle hours or less.  If the client stores the session\_secret in a cookie store over plaintext HTTP (i.e. Rails
+cookie sessions), the server **must** validate that data is coming from a valid client, either by whitelisting IP addresses
+or use of client SSL certs.
+
 Logging in
 ----------
 
@@ -49,3 +59,4 @@ Logging in
 
 User management
 ---------------
+
