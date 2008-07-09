@@ -10,7 +10,7 @@ class Account < ActiveRecord::Base
   
   def self.digest(username, password)
     sha1 = OpenSSL::Digest::Digest.new('SHA1')
-    sha1 << username << new_pass
+    sha1 << username << password
     return Base64.encode64(sha1.digest).chomp
   end
 end
