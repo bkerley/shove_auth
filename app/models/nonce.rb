@@ -46,9 +46,11 @@ class Nonce < ActiveRecord::Base
     nonce = find_by_sid(sid)
     return false unless nonce
     r = nonce.load_user(user, hmac)
-    return false unless r
-    nonce.save
-    return user
+    if r
+      nonce.save
+      return r
+    end
+    return false
   end
   
   def self.hmac(secret, message)
