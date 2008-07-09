@@ -8,4 +8,8 @@ class ApplicationController < ActionController::Base
   # protect_from_forgery # :secret => '8f56c26399c51a9bd5c7e7ade0e7883b'
   
   filter_parameter_logging :password
+  
+  def hmac(secret, message)
+    Nonce.hmac(secret, message)
+  end
 end
