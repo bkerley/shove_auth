@@ -4,4 +4,5 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :nonces
   map.resources :accounts
   
+  map.error '*url', :controller=>'session', :action=>'nil'
 end
