@@ -3,6 +3,7 @@ require 'test_helper'
 class NonceTest < ActiveSupport::TestCase
   def setup
     @n = Nonce.new
+    @n.save
   end
   
   def test_creation_generators
