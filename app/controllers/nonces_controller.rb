@@ -1,4 +1,5 @@
 class NoncesController < ApplicationController
+  protect_from_forgery
   # GET /nonces
   # GET /nonces.xml
   def index

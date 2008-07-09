@@ -1,4 +1,5 @@
 class AccountsController < ApplicationController
+  protect_from_forgery
   # GET /accounts
   # GET /accounts.xml
   def index
