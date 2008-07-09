@@ -10,6 +10,7 @@ class Nonce < ActiveRecord::Base
   end
   
   def load_user(user, hmac)
+    return false if self.user_id
     check = Nonce.hmac(user.digest, "PUT /session/#{sid} #{nonce}")
     return false unless check == hmac
     self.user_id = user.id
