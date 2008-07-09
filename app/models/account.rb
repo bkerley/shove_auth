@@ -4,8 +4,12 @@ class Account < ActiveRecord::Base
     self.digest = Account.digest(self.username, password)
   end
   
-  def check_digest(password)
-    return self.digest == Account.digest(self.username, password)
+  def check_password(password)
+    check_digest Account.digest(self.username, password)
+  end
+  
+  def check_digest(digest)
+    return self.digest == digest
   end
   
   def self.digest(username, password)
