@@ -10,5 +10,7 @@ class NonceTest < ActiveSupport::TestCase
     assert_not_nil @n.sid
     assert_not_equal @n.nonce, ''
     assert_not_equal @n.sid, ''
+    assert_in_delta @n.nonce.length, 40, 2
+    assert_in_delta @n.sid.length, 40, 2
   end
 end
