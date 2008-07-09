@@ -24,8 +24,14 @@ class NonceTest < ActiveSupport::TestCase
     message = "PUT /session/#{sid} #{nonce}"
     secret = user.digest
     hmac = Nonce.hmac(secret, message)
+    
+    assert !Nonce.load_user(sid, user.username, 'fart')
+    assert !Nonce.load_user(sid, 'fart', hmac)
+    assert !Nonce.load_user('fart', user.username, hmac)
+    
     result = Nonce.load_user(sid, user.username, hmac)
     assert result
     assert_equal result.id, user.id
   end
+  
 end
