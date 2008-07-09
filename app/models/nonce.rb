@@ -1,8 +1,23 @@
 class Nonce < ActiveRecord::Base
   before_create :creation_generator
+  belongs_to :user
   
   def creation_generator
     self.nonce = Base64.encode64(OpenSSL::Random.random_bytes(30)).chomp
     self.sid = Base64.encode64(OpenSSL::Random.random_bytes(30)).chomp
+  end
+  
+  def self.load_user(sid, username, hmac)
+    user = Account.find_by_username(username)
+    nonce = find_by_sid(sid)
+    check = hmac(user.digest, "PUT /session/#{sid} #{nonce.nonce}")
+    return false unless check == hmac
+    nonce.user_id = user.id
+    nonce.save
+    return user
+  end
+  
+  def self.hmac(secret, message)
+    OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('SHA1'), secret, message)
   end
 end
