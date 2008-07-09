@@ -13,23 +13,26 @@ Concepts and variables
 ----------------------
 * secret - sha1(username+pass) expressed in base64
 * sid - session_id, 768359313 as example, not constrained to integers (use a varchar type)
-* 
+* signed request - requests relying on authentication should include a signature consisting of:
+	* the action (for example, `GET /user/username`)
+	* the current sid (even if this is already included in the action URL)
+	* any arguments (such as the password for update user)
 
 REST protocol
 -------------
 
 * Session management:
-  * Create session: `POST /session/new` - returns the nonce and session\_id (example session\_id: 768359313)
+  * Create session: `POST /session/new` - returns the nonce and session\_id (example session\_id: sid)
   * Update session: `PUT /session/sid` username, hmac(sha1(username+pass), nonce)
     * 303 See Other & redirect to show session - successful authentication
     * 400 Bad Request - malformed request
     * 403 Forbidden - failed authentication
-  * Show session: `GET /session/sid` hmac(secret, 'GET /session/sid') - show if session is invalid, waiting, or authenticated
+  * Show session: `GET /session/sid` hmac(secret, 'GET /session/sid sid') - show if session is invalid, waiting, or authenticated
 * User management, returns 403 when provided session doesn't have permissions
-  * Show user: `GET /user/username` sid, hmac(secret, 'GET /user/username 768359313') - show username, time and client of last login(s)
-  * Update user: `PUT /user/username` sid, password, hmac(secret, 'PUT /user/username 768359313') - set password
-  * Destroy user: `DELETE /user/username` sid, hmac(secret, 'DELETE /user/username 768359313') - delete said user
-  * Create user: `POST /user/username` sid, hmac(secret, 'POST /user/username 768359313') - create user with specified name
+  * Show user: `GET /user/username` sid, hmac(secret, 'GET /user/username sid') - show username, time and client of last login(s)
+  * Update user: `PUT /user/username` sid, password, hmac(secret, 'PUT /user/username sid password') - set password
+  * Destroy user: `DELETE /user/username` sid, hmac(secret, 'DELETE /user/username sid') - delete said user
+  * Create user: `POST /user/username` sid, hmac(secret, 'POST /user/username sid') - create user with specified name
 
 Logging in
 ----------
