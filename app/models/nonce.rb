@@ -2,13 +2,11 @@ class Nonce < ActiveRecord::Base
   before_create :creation_generator
   belongs_to :user
   
+  # create-time methods
+  
   def creation_generator
     self.nonce = Base64.encode64(OpenSSL::Random.random_bytes(30)).chomp
     self.sid = Base64.encode64(OpenSSL::Random.random_bytes(30)).chomp
-  end
-  
-  def state
-    return "authenticated" if self.user_id
   end
   
   def load_user(user, hmac)
@@ -17,6 +15,28 @@ class Nonce < ActiveRecord::Base
     self.user_id = user.id
     return user
   end
+  
+  # inspector methods
+  
+  def state
+    return self.user_id ? :authenticated : :not_authenticated
+  end
+  
+  # serialization methods
+  
+  def to_xml
+    super(serialization_options)
+  end
+  
+  def to_json
+    super(serialization_options)
+  end
+  
+  def serialization_options
+    {:methods=>[:state], :except=>[:id, :user_id]}
+  end
+  
+  # class methods
   
   def self.load_user(sid, username, hmac)
     user = Account.find_by_username(username)
