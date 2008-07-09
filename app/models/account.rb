@@ -1,5 +1,8 @@
 class Account < ActiveRecord::Base
   
+  def password
+  end
+  
   def password=(password)
     self.digest = Account.digest(self.username, password)
   end
