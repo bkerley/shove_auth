@@ -1,0 +1,13 @@
+<p>
+  <b>Username:</b>
+  <%=h @account.username %>
+</p>
+
+<p>
+  <b>Digest:</b>
+  <%=h @account.digest %>
+</p>
+
+
+<%= link_to 'Edit', edit_account_path(@account) %> |
+<%= link_to 'Back', accounts_path %>
