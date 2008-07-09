@@ -1,0 +1,24 @@
+<h1>Listing nonces</h1>
+
+<table>
+  <tr>
+    <th>Nonce</th>
+    <th>Sid</th>
+    <th>User</th>
+  </tr>
+
+<% for nonce in @nonces %>
+  <tr>
+    <td><%=h nonce.nonce %></td>
+    <td><%=h nonce.sid %></td>
+    <td><%=h nonce.user_id %></td>
+    <td><%= link_to 'Show', nonce %></td>
+    <td><%= link_to 'Edit', edit_nonce_path(nonce) %></td>
+    <td><%= link_to 'Destroy', nonce, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New nonce', new_nonce_path %>

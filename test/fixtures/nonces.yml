@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  nonce: MyString
+  sid: MyString
+  user_id: 
+
+two:
+  nonce: MyString
+  sid: MyString
+  user_id: 

@@ -1,0 +1,23 @@
+<h1>New nonce</h1>
+
+<% form_for(@nonce) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :nonce %><br />
+    <%= f.text_field :nonce %>
+  </p>
+  <p>
+    <%= f.label :sid %><br />
+    <%= f.text_field :sid %>
+  </p>
+  <p>
+    <%= f.label :user_id %><br />
+    <%= f.text_field :user_id %>
+  </p>
+  <p>
+    <%= f.submit "Create" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', nonces_path %>

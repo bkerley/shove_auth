@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :nonces
+
   map.resources :accounts
 
   # The priority is based upon order of creation: first created -> highest priority.
