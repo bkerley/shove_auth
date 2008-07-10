@@ -48,6 +48,9 @@ preferably 24 idle hours or less.  If the client stores the session\_secret in a
 cookie sessions), the server **must** validate that data is coming from a valid client, either by whitelisting IP addresses
 or use of client SSL certs.
 
+SSL/TLS should be used to protect the client-shove\_auth session from replay attacks, and provide for SSL certificate authentication
+of clients.
+
 Logging in
 ----------
 
