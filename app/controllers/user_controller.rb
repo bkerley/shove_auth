@@ -6,6 +6,12 @@ class UserController < ApplicationController
   end
 
   def show
+    user = Account.find_by_username params[:id]
+    
+    respond_to do |wants|
+      wants.xml {  render :xml=>user.to_xml }
+      wants.json { render :json=>user.to_json }
+    end
   end
 
   def destroy
