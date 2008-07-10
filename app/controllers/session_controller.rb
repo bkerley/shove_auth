@@ -1,7 +1,6 @@
 class SessionController < ApplicationController
   def create
     n = Nonce.create
-    headers[:location] = "/session/#{n.sid}"
     respond_to do |wants|
       wants.json { render :json=>n.to_json }
       wants.xml { render :xml=>n.to_xml }
@@ -10,7 +9,7 @@ class SessionController < ApplicationController
 
   def update
     
-    user = Nonce.load_user(params[:id], params[:username], params[:hmac])
+    user = Nonce.load_user(params[:id], params[:session][:username], params[:session][:hmac])
     
     unless user
       render(:text=>'400 Bad Request', :status=>403)
@@ -18,6 +17,10 @@ class SessionController < ApplicationController
     end
     
     
+    respond_to do |wants|
+      wants.json { render :json=>user.to_json }
+      wants.xml { render :xml=>user.to_xml }
+    end
   end
 
   def show
