@@ -17,7 +17,7 @@ class NonceTest < ActiveSupport::TestCase
     assert_in_delta @n.sid.length, 40, 2
   end
   
-  def test_load_user
+  def test_load_nonce
     nonce = @n.nonce
     sid = @n.sid
     user = Account.find_by_username 'bryce'
@@ -25,13 +25,13 @@ class NonceTest < ActiveSupport::TestCase
     secret = user.digest
     hmac = Nonce.hmac(secret, message)
     
-    assert !Nonce.load_user(sid, user.username, 'fart')
-    assert !Nonce.load_user(sid, 'fart', hmac)
-    assert !Nonce.load_user('fart', user.username, hmac)
+    assert !Nonce.load_nonce(sid, user.username, 'fart')
+    assert !Nonce.load_nonce(sid, 'fart', hmac)
+    assert !Nonce.load_nonce('fart', user.username, hmac)
     
-    result = Nonce.load_user(sid, user.username, hmac)
+    result = Nonce.load_nonce(sid, user.username, hmac)
     assert result
-    assert_equal result.id, user.id
+    assert_equal result.account.id, user.id
   end
   
 end

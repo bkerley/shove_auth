@@ -40,7 +40,7 @@ class Nonce < ActiveRecord::Base
   
   # class methods
   
-  def self.load_user(sid, username, hmac)
+  def self.load_nonce(sid, username, hmac)
     user = Account.find_by_username(username)
     return false unless user
     nonce = find_by_sid(sid)
@@ -48,7 +48,7 @@ class Nonce < ActiveRecord::Base
     r = nonce.load_user(user, hmac)
     if r
       nonce.save
-      return r
+      return nonce
     end
     return false
   end
