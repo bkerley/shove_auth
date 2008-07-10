@@ -20,6 +20,8 @@ module ShoveAuthClient
       self.hmac = hmac(digest(username, password), "PUT /session/#{self.sid} #{self.nonce}")
       self.save
       return self.state
+    rescue ActiveResource::ForbiddenAccess
+      return false
     end
     
     private
