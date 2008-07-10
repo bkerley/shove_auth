@@ -26,12 +26,12 @@ class Nonce < ActiveRecord::Base
   
   # serialization methods
   
-  def to_xml
-    super(serialization_options)
+  def to_xml(o = {})
+    super(o.merge serialization_options)
   end
   
-  def to_json
-    super(serialization_options)
+  def to_json(o = {})
+    super(o.merge serialization_options)
   end
   
   def serialization_options

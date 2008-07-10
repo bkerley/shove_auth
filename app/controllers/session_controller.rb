@@ -9,17 +9,17 @@ class SessionController < ApplicationController
 
   def update
     
-    user = Nonce.load_user(params[:id], params[:session][:username], params[:session][:hmac])
+    n = Nonce.load_nonce(params[:id], params[:session][:username], params[:session][:hmac])
     
-    unless user
+    unless n
       render(:text=>'400 Bad Request', :status=>403)
       return
     end
     
     
     respond_to do |wants|
-      wants.json { render :json=>user.to_json }
-      wants.xml { render :xml=>user.to_xml }
+      wants.json { render :json=>n.to_json }
+      wants.xml { render :xml=>n.to_xml }
     end
   end
 
