@@ -38,9 +38,8 @@ module ShoveAuthClient
     end
     
     def login(username, password)
-      result = @session.authenticate(username, password)
-      @user = User.find(username)
-      return result
+      @username = username
+      return @session.authenticate(username, password)
     end
   end
   
