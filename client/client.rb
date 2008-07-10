@@ -5,6 +5,7 @@ SITE = 'http://localhost:3001/'
 
 module ShoveAuthClient
   class Session < ActiveResource::Base
+    include ShoveAuthClient
     self.site = SITE
     self.collection_name = 'session'
 
@@ -23,19 +24,10 @@ module ShoveAuthClient
     rescue ActiveResource::ForbiddenAccess
       return false
     end
-    
-    private
-    def hmac(secret, message)
-      OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('SHA1'), secret, message)
-    end
-    
-    def digest(username, password)
-      sha1 = OpenSSL::Digest::Digest.new('SHA1')
-      sha1 << username << password
-      return Base64.encode64(sha1.digest).chomp
-    end
+
   end
   class User < ActiveResource::Base
+    include ShoveAuthClient
     self.site = SITE
     self.collection_name = 'user'
   end
@@ -46,9 +38,22 @@ module ShoveAuthClient
     end
     
     def login(username, password)
-      @session.authenticate(username, password)
+      result = @session.authenticate(username, password)
       @user = User.find(username)
+      return result
     end
+  end
+  
+  
+  private
+  def hmac(secret, message)
+    OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('SHA1'), secret, message)
+  end
+  
+  def digest(username, password)
+    sha1 = OpenSSL::Digest::Digest.new('SHA1')
+    sha1 << username << password
+    return Base64.encode64(sha1.digest).chomp
   end
 end
 
