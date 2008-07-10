@@ -26,7 +26,7 @@ REST protocol
 -------------
 
 * Session management:
-  * Create session: `POST /session/new` - returns the nonce and sid
+  * Create session: `POST /session/create` - returns the nonce and sid
   * Update session: `PUT /session/sid` username, hmac(auth\_secret, `PUT /session/sid nonce`)
 		* 200 OK - successful authentication, includes session\_secret
 		* 400 Bad Request - failed authentication or malformed request
