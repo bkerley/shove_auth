@@ -14,6 +14,7 @@ class Nonce < ActiveRecord::Base
     check = Nonce.hmac(user.digest, "PUT /session/#{sid} #{nonce}")
     return false unless check == hmac
     self.user_id = user.id
+    self.nonce = nil
     self.session_secret = Base64.encode64(OpenSSL::Random.random_bytes(30)).chomp
     return user
   end
