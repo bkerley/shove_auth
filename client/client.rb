@@ -4,6 +4,11 @@ require 'openssl'
 module ShoveAuth
   @@site = 'http://localhost:3001/'
   
+  # Just log in and discard the session
+  def login(username, password)
+    return Client.new.login(username, password)
+  end
+  
   class Session < ActiveResource::Base
     include ShoveAuth
     self.site = @@site
