@@ -7,32 +7,30 @@ class NoncesControllerTest < ActionController::TestCase
     assert_not_nil assigns(:nonces)
   end
 
-  def test_should_get_new
+  def test_should_not_get_new
     get :new
-    assert_response :success
+    assert_response :missing
   end
 
-  def test_should_create_nonce
-    assert_difference('Nonce.count') do
-      post :create, :nonce => { }
-    end
-
-    assert_redirected_to nonce_path(assigns(:nonce))
+  def test_should_not_create_nonce
+    post :create, :nonce => { }
+    
+    assert_response :missing
   end
 
-  def test_should_show_nonce
+  def test_should_not_show_nonce
     get :show, :id => nonces(:one).id
-    assert_response :success
+    assert_response :missing
   end
 
-  def test_should_get_edit
+  def test_should_not_get_edit
     get :edit, :id => nonces(:one).id
-    assert_response :success
+    assert_response :missing
   end
 
-  def test_should_update_nonce
+  def test_should_not_update_nonce
     put :update, :id => nonces(:one).id, :nonce => { }
-    assert_redirected_to nonce_path(assigns(:nonce))
+    assert_response :missing
   end
 
   def test_should_destroy_nonce
