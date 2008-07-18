@@ -5,7 +5,7 @@ module ShoveAuth
   @@site = 'http://localhost:3001/'
   
   # Just log in and discard the session
-  def login(username, password)
+  def self.login(username, password)
     return Client.new.login(username, password)
   end
   
@@ -20,7 +20,7 @@ module ShoveAuth
         self.id = CGI.escape(self.sid)
       end
     end
-    
+
     def authenticate(username, password)
       self.username = username
       self.hmac = hmac(digest(username, password), "PUT /session/#{self.sid} #{self.nonce}")
@@ -38,6 +38,8 @@ module ShoveAuth
   end
   
   class Client
+    attr_reader :username
+    
     def initialize
       @session = Session.create
     end
