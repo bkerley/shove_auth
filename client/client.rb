@@ -3,7 +3,7 @@ require 'openssl'
 
 SITE = 'http://localhost:3001/'
 
-module ShoveAuthClient
+module ShoveAuth
   class Session < ActiveResource::Base
     include ShoveAuthClient
     self.site = SITE
