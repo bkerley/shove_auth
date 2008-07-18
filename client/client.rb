@@ -1,12 +1,12 @@
 require 'active_resource'
 require 'openssl'
 
-SITE = 'http://localhost:3001/'
-
 module ShoveAuth
+  @@site = 'http://localhost:3001/'
+  
   class Session < ActiveResource::Base
-    include ShoveAuthClient
-    self.site = SITE
+    include ShoveAuth
+    self.site = @@site
     self.collection_name = 'session'
 
     def create
@@ -27,8 +27,8 @@ module ShoveAuth
 
   end
   class User < ActiveResource::Base
-    include ShoveAuthClient
-    self.site = SITE
+    include ShoveAuth
+    self.site = @@site
     self.collection_name = 'user'
   end
   
