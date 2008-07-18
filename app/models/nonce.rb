@@ -57,4 +57,8 @@ class Nonce < ActiveRecord::Base
   def self.hmac(secret, message)
     OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('SHA1'), secret, message)
   end
+  
+  def self.find_outdated
+    self.find(:all, :conditions=>['created_at < ?', 24.hours.ago])
+  end
 end
