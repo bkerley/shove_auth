@@ -44,5 +44,11 @@ class SessionController < ApplicationController
       wants.xml { render :xml=>n.to_xml }
     end
   end
+  
+  def destroy
+    sid = params[:id]
+    n = Nonce.find_by_sid(sid)
+    expected
+  end
 
 end
