@@ -25,16 +25,15 @@ class SessionController < ApplicationController
 
   def show
     sid = params[:id]
-    
     n = Nonce.find_by_sid(sid)
-    
-    expected_hmac = hmac(n.session_secret, '')
     if n.nil?
       render(:text=>'404 Not Found', :status=>404) 
       return
     end
     
-    if n.state == :not_authenticated
+    expected_hmac = hmac(n.session_secret, "GET /session/#{sid} #{sid}")
+    
+    if n.state == :not_authenticated || params[:hmac] != expected_hmac
       render(:text=>'403 Forbidden', :status=>403)
       return
     end
