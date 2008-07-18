@@ -34,6 +34,9 @@ REST protocol
 		* 404 Not Found - no session with this sid
 		* 403 Forbidden - session not authenticated
 		* 200 OK - return session secret 
+	* Destroy session: `DELETE /session/sid` hmac(session\_secret, `DELETE /session/sid`)
+		* 403 Forbidden - delete failed for permissions or something
+		* 204 No Content - deletion happened
 * User management, returns 403 when provided session doesn't have permissions
   * Show user: `GET /user/username` sid, hmac(session\_secret, `GET /user/username sid`) - show username, time and client of last login(s)
   * Update user: `PUT /user/username` sid, password, hmac(session\_secret, `PUT /user/username sid password`) - set password
