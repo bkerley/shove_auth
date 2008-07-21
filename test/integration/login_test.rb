@@ -1,21 +1,44 @@
 require 'test_helper'
+require 'socket'
 require File.expand_path(File.dirname(__FILE__) + "/../../client/client.rb")
 
 class LoginTest < ActionController::IntegrationTest
   fixtures :accounts
   
-  def test_simple_authentication
-    assert_equal :authenticated, ShoveAuth::login('bkerley', 'butt')
+  context "authenticating against a server that doesn't exist" do
+    setup do
+      ShoveAuth.site = "http://invalid/"
+    end
+    
+    should "fail" do
+      assert_raise(SocketError) { ShoveAuth::login('asdf','asdf') }
+      assert_raise(SocketError) { ShoveAuth::Client.new.login('fdsa','fdsa') }
+    end
   end
   
-  def test_stateful_authentication
-    c = ShoveAuth::Client.new
-    assert_equal :authenticated, c.login('bkerley','butt')
-    assert_equal 'bkerley', c.username
-  end
-  
-  def test_authentication_fail
-    assert !ShoveAuth::login('bkerley','invalid')
-    assert !ShoveAuth::Client.new.login('bkerley','invaild')
+  context "with shove_auth on TCP 3000 HTTP" do
+    setup do
+      ShoveAuth.site = "http://localhost:3001/"
+    end
+    
+    should "authenticate simply" do
+      assert_equal :authenticated, ShoveAuth::login('bkerley', 'butt')
+    end
+    
+    should "authenticate statefully" do
+      c = ShoveAuth::Client.new
+      assert_equal :authenticated, c.login('bkerley','butt')
+      assert_equal 'bkerley', c.username
+    end
+    
+    should "fail when authenticating with the wrong password" do
+      assert !ShoveAuth::login('bkerley','invalid')
+      assert !ShoveAuth::Client.new.login('bkerley','invaild')
+    end
+    
+    should "fail when authenticating with no user" do
+      assert !ShoveAuth::login('bkerleyxxx','invalid')
+      assert !ShoveAuth::Client.new.login('bkerleyxxx','invaild')
+    end
   end
 end
