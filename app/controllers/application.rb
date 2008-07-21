@@ -4,8 +4,7 @@
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
 
-  # only protect the html-bound controllers
-  # protect_from_forgery # :secret => '8f56c26399c51a9bd5c7e7ade0e7883b'
+  layout 'scaffold'
   
   filter_parameter_logging :password
   
