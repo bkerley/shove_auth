@@ -1,17 +1,28 @@
 require 'active_resource'
+require 'active_support'
 require 'openssl'
 
 module ShoveAuth
-  @@site = 'http://localhost:3001/'
+  @@site = 'http://localhost:3000/'
   
   # Just log in and discard the session
   def self.login(username, password)
     return Client.new.login(username, password)
   end
   
+  def self.site=(newsite)
+    @@site = newsite
+    Session.site = newsite
+    User.site = newsite
+  end
+  
+  def self.site
+    return @@site
+  end
+  
   class Session < ActiveResource::Base
     include ShoveAuth
-    self.site = @@site
+    self.site = ShoveAuth.site
     self.collection_name = 'session'
 
     def create
@@ -33,7 +44,7 @@ module ShoveAuth
   end
   class User < ActiveResource::Base
     include ShoveAuth
-    self.site = @@site
+    self.site = ShoveAuth.site
     self.collection_name = 'user'
   end
   
