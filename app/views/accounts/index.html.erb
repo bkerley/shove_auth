@@ -3,13 +3,13 @@
 <table>
   <tr>
     <th>Username</th>
-    <th>Digest</th>
+    <th>Admin?</th>
   </tr>
 
 <% for account in @accounts %>
   <tr>
     <td><%=h account.username %></td>
-    <td><%=h account.digest %></td>
+    <td><%=h account.admin ? 'Administrator' : 'Not Admin' %></td>
     <td><%= link_to 'Show', account %></td>
     <td><%= link_to 'Edit', edit_account_path(account) %></td>
     <td><%= link_to 'Destroy', account, :confirm => 'Are you sure?', :method => :delete %></td>
