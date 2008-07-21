@@ -1,2 +1,7 @@
-<h1>Admin#show</h1>
-<p>Find me in app/views/admin/show.html.erb</p>
+<h1>Logged In</h1>
+<p>You are: <%=h @u.username %></p>
+<ul>
+	<li><%= link_to "Account list", accounts_path %> - create and destroy users, reset passwords</li>
+	<li><%= link_to "Nonce list", nonces_path %> - recent login sessions</li>
+	<li><%= link_to "Log out", admin_path(@u.id), :method=>:delete %></li>
+</ul>
