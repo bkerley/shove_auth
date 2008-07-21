@@ -1,45 +1,41 @@
 require 'test_helper'
 
 class AccountsControllerTest < ActionController::TestCase
-  def test_should_get_index
-    get :index
-    assert_response :success
-    assert_not_nil assigns(:accounts)
-  end
+  context "without login" do
+    should "fail to get index" do
+      get :index
+      assert_response 403
+    end
 
-  def test_should_get_new
-    get :new
-    assert_response :success
-  end
+    should "fail to get new form" do
+      get :new
+      assert_response 403
+    end
 
-  def test_should_create_account
-    assert_difference('Account.count') do
+    should "fail to create account" do
       post :create, :account => { }
+
+      assert_response 403
     end
 
-    assert_redirected_to account_path(assigns(:account))
-  end
+    should "fail to show account" do
+      get :show, :id => accounts(:one).id
+      assert_response 403
+    end
 
-  def test_should_show_account
-    get :show, :id => accounts(:one).id
-    assert_response :success
-  end
+    should "fail to get edit form" do
+      get :edit, :id => accounts(:one).id
+      assert_response 403
+    end
 
-  def test_should_get_edit
-    get :edit, :id => accounts(:one).id
-    assert_response :success
-  end
+    should "fail to update account" do
+      put :update, :id => accounts(:one).id, :account => { }
+      assert_response 403
+    end
 
-  def test_should_update_account
-    put :update, :id => accounts(:one).id, :account => { }
-    assert_redirected_to account_path(assigns(:account))
-  end
-
-  def test_should_destroy_account
-    assert_difference('Account.count', -1) do
+    should "fail to destroy account" do
       delete :destroy, :id => accounts(:one).id
+      assert_response 403
     end
-
-    assert_redirected_to accounts_path
   end
 end
