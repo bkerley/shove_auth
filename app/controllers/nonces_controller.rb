@@ -1,4 +1,5 @@
 class NoncesController < ApplicationController
+  before_filter :require_admin
   protect_from_forgery
   # GET /nonces
   # GET /nonces.xml

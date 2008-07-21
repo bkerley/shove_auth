@@ -1,5 +1,6 @@
 class AccountsController < ApplicationController
   protect_from_forgery
+  before_filter :require_admin
   # GET /accounts
   # GET /accounts.xml
   def index
