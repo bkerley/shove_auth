@@ -6,6 +6,7 @@ set :repository,  "git@github.com:bkerley/shove_auth.git"
 # via the :deploy_to variable:
 set :deploy_to, "/home/shove/apps/#{application}"
 set :user, 'shove'
+set :run_method, :run
 set :deploy_via, :remote_cache
 set :git_enable_submodules, 1
 
