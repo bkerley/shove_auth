@@ -15,30 +15,6 @@ Capistrano::Configuration.instance(:must_exist).load do
       sudo "svccfg import #{shared_path}/#{application}-smf.xml"
     end
   
-    desc "Creates an Apache 2.2 compatible virtual host configuration file"
-    task :create_vhost, :roles => :web do
-      public_ip = ""
-      run "ifconfig -a | ggrep -A1 e1000g0 | grep inet | awk '{print $2}'" do |ch, st, data|
-        public_ip = data.gsub(/[\r\n]/, "")
-      end
- 
-      cluster_info = YAML.load(File.read('config/mongrel_cluster.yml'))
- 
-      start_port = cluster_info['port'].to_i
-      end_port = start_port + cluster_info['servers'].to_i - 1
-      public_path = "#{current_path}/public"
-      
-      template = File.read("config/accelerator/apache_vhost.erb")
-      buffer = ERB.new(template).result(binding)
-      
-      put buffer, "#{shared_path}/#{application}-apache-vhost.conf"
- 
-      sudo "cp #{shared_path}/#{application}-apache-vhost.conf /opt/csw/apache2/etc/virtualhosts/#{application}.conf"
-      # If you're on a new pkgsrc templated accelerator replace the line above with the following line:
-      # sudo "cp #{shared_path}/#{application}-apache-vhost.conf /opt/local/etc/httpd/virtualhosts/#{application}.conf"
- 
-      restart_apache
-    end
     
     desc "Restart nginx"
     task :restart_nginx, :roles => :web do
@@ -75,14 +51,9 @@ Capistrano::Configuration.instance(:must_exist).load do
       end
     end
     
-    desc "After setup, creates Solaris SMF config file and adds Apache vhost"
-    task :setup_smf_and_vhost do
-      create_smf
-      create_vhost
-    end
     
   end
   
-  after 'deploy:setup', 'accelerator:setup_smf_and_vhost'
+  after 'deploy:setup', 'accelerator:create_smf'
   
 end
