@@ -16,9 +16,9 @@ class LoginTest < ActionController::IntegrationTest
     end
   end
   
-  context "with shove_auth on TCP 3000 HTTP" do
+  context "with shove_auth on http://shove-auth.local/" do
     setup do
-      ShoveAuth.site = "http://localhost:3001/"
+      ShoveAuth.site = "http://shove-auth.local/"
     end
     
     should "authenticate simply" do
