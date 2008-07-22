@@ -1,0 +1,7 @@
+---
+port: 7100
+pid_file: tmp/pids/mongrel.pid
+address: 127.0.0.1
+servers: 2
+environment: production
+log_file: log/mongrel.log
