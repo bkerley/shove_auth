@@ -40,9 +40,9 @@ Capistrano::Configuration.instance(:must_exist).load do
       restart_apache
     end
     
-    desc "Restart apache"
-    task :restart_apache, :roles => :web do
-      sudo "svcadm refresh svc:/network/http:cswapache2"
+    desc "Restart nginx"
+    task :restart_nginx, :roles => :web do
+      sudo "svcadm refresh svc:/network/nginx-static-assets:default"
       # If you're on a new pkgsrc templated accelerator replace the line above with the following line:
       # sudo "svcadm restart apache"
     end
