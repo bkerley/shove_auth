@@ -16,7 +16,7 @@ class LoginTest < ActionController::IntegrationTest
     end
   end
   
-  context "with shove_auth on http://shove-auth.local/" do
+  context "with shove_auth on http://shove-auth.local/ and testing user bkerley/butt" do
     setup do
       ShoveAuth.site = "http://shove-auth.local/"
     end
