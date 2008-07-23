@@ -1,3 +1,4 @@
+require 'config/accelerator/accelerator_tasks.rb'
 set :application, "shove_auth"
 set :repository,  "git@github.com:bkerley/shove_auth.git"
 
