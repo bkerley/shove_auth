@@ -18,3 +18,15 @@ set :scm, :git
 role :app, "tech.worldmedia.net"
 role :web, "tech.worldmedia.net"
 role :db,  "tech.worldmedia.net", :primary => true
+
+deploy.task :start do
+  accelerator.smf_start
+end
+
+deploy.task :stop do
+  accelerator.smf_stop
+end
+
+deploy.task :restart do
+  accelerator.smf_restart
+end
