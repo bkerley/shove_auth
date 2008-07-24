@@ -36,8 +36,7 @@ Capistrano::Configuration.instance(:must_exist).load do
   
     desc "Restarts the application"
     task :smf_restart do
-      smf_stop
-      smf_start
+      run "svcadm restart /network/mongrel/#{application}-production"
     end
  
     desc "Deletes the configuration"
