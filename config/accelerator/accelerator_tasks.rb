@@ -13,25 +13,25 @@ Capistrano::Configuration.instance(:must_exist).load do
       
       put buffer, "#{shared_path}/#{application}-smf.xml"
       
-      sudo "svccfg import #{shared_path}/#{application}-smf.xml"
+      run "svccfg import #{shared_path}/#{application}-smf.xml"
     end
   
     
     desc "Restart nginx"
     task :restart_nginx, :roles => :web do
-      sudo "svcadm refresh svc:/network/nginx-static-assets:default"
+      run "svcadm restart svc:/network/nginx-static-assets:default"
       # If you're on a new pkgsrc templated accelerator replace the line above with the following line:
       # sudo "svcadm restart apache"
     end
     
     desc "Stops the application"
     task :smf_stop, :roles => :app do
-      sudo "svcadm disable /network/mongrel/#{application}-production"
+      run "svcadm disable /network/mongrel/#{application}-production"
     end
   
     desc "Starts the application"
     task :smf_start, :roles => :app do
-      sudo "svcadm enable -r /network/mongrel/#{application}-production"
+      run "svcadm enable -r /network/mongrel/#{application}-production"
     end
   
     desc "Restarts the application"
@@ -42,7 +42,7 @@ Capistrano::Configuration.instance(:must_exist).load do
  
     desc "Deletes the configuration"
     task :smf_delete, :roles => :app do
-      sudo "svccfg delete /network/mongrel/#{application}-production"
+      run "svccfg delete /network/mongrel/#{application}-production"
     end
  
     desc "Shows all Services"
