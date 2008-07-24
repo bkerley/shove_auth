@@ -1,5 +1,6 @@
 <h1>Logged In</h1>
 <p>You are: <%=h @u.username %></p>
+<p>This is: shove_auth <%=h current_revision %>
 <ul>
 	<li><%= link_to "Account list", accounts_path %> - create and destroy users, reset passwords</li>
 	<li><%= link_to "Nonce list", nonces_path %> - recent login sessions</li>
