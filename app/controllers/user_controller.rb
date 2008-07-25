@@ -1,4 +1,6 @@
 class UserController < ApplicationController
+  before_filter :check_username
+  
   def create
   end
 
@@ -34,6 +36,18 @@ class UserController < ApplicationController
     render :text=>'403 Forbidden', :status=>403
     return false
   rescue
+    render :text=>'403 Forbidden', :status=>403
+    return false
+  end
+  
+  def check_username
+    username = params[:username]
+    return fail_403 unless username
+    @user = Account.find_by_username username
+    return fail_403 unless @user
+  end
+  
+  def fail_403
     render :text=>'403 Forbidden', :status=>403
     return false
   end
