@@ -4,26 +4,26 @@ class NonceTest < ActiveSupport::TestCase
   fixtures :accounts
   
   should_belong_to :account
-  should_require_unique_attributes :nonce
-  should_require_unique_attributes :sid
+  should_have_indices :sid
   should_only_allow_numeric_values_for :user_id
   
   context 'a new nonce' do
     setup do
-      @n = Nonce.new
-      @n.save
+      @n = Nonce.create
+    end
+    
+    should 'be valid right out of the gate' do
+      assert_valid @n      
     end
     
     should 'create appropriately-sized nonce and sid' do
       assert_not_nil @n.nonce
       assert_not_nil @n.sid
-      assert_not_equal @n.nonce, 'MyString'
-      assert_not_equal @n.sid, 'MyString'
-      assert_in_delta @n.nonce.length, 40, 2
-      assert_in_delta @n.sid.length, 40, 2
+      assert_equal 40, @n.nonce.length
+      assert_equal 40, @n.sid.length
     end
     
-    should 'load with correct signature' do
+    should 'only load with the correct signature' do
       nonce = @n.nonce
       sid = @n.sid
       user = Account.find_by_username 'bryce'
