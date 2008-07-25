@@ -41,9 +41,9 @@ class UserController < ApplicationController
   end
   
   def check_username
-    username = params[:username]
-    return fail_403 unless username
-    @user = Account.find_by_username username
+    @username = params[:username]
+    return fail_403 unless @username
+    @user = Account.find_by_username @username
     return fail_403 unless @user
   end
   
