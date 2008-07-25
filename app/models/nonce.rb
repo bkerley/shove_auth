@@ -41,7 +41,7 @@ class Nonce < ActiveRecord::Base
   
   # class methods
   
-  # thirty random bytes
+  # forty random bytes
   def self.rand_bytes
     Base64.encode64(OpenSSL::Random.random_bytes(30)).chomp.tr('+/','-_')
   end
