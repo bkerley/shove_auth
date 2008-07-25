@@ -8,8 +8,8 @@ class SessionController < ApplicationController
   end
 
   def update
-    
-    n = Nonce.load_nonce(params[:id], params[:session][:username], params[:session][:hmac])
+    session = params[:session] || {}
+    n = Nonce.load_nonce(params[:id], session[:username], session[:hmac])
     
     unless n
       render(:text=>'400 Bad Request', :status=>403)
