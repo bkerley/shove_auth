@@ -5,8 +5,8 @@ class Nonce < ActiveRecord::Base
   # create-time methods
   
   def creation_generator
-    self.nonce = Base64.encode64(OpenSSL::Random.random_bytes(30)).chomp
-    self.sid = Base64.encode64(OpenSSL::Random.random_bytes(30)).chomp
+    self.nonce = Nonce.rand_bytes
+    self.sid = Nonce.rand_bytes
   end
   
   def load_user(user, hmac)
@@ -15,7 +15,7 @@ class Nonce < ActiveRecord::Base
     return false unless check == hmac
     self.user_id = user.id
     self.nonce = nil
-    self.session_secret = Base64.encode64(OpenSSL::Random.random_bytes(30)).chomp
+    self.session_secret = Nonce.rand_bytes
     return user
   end
   
@@ -40,6 +40,11 @@ class Nonce < ActiveRecord::Base
   end
   
   # class methods
+  
+  # thirty random bytes
+  def self.rand_bytes
+    Base64.encode64(OpenSSL::Random.random_bytes(30)).chomp.tr('+/','-_')
+  end
   
   def self.load_nonce(sid, username, hmac)
     user = Account.find_by_username(username)
