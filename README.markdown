@@ -39,7 +39,10 @@ REST protocol
 		* 204 No Content - deletion happened
 * User management, returns 403 when provided session doesn't have permissions
   * Show user: `GET /user/username` sid, hmac(session\_secret, `GET /user/username sid`) - show username, time and client of last login(s)
-  * Update user: `PUT /user/username` sid, password, hmac(session\_secret, `PUT /user/username sid password`) - set password
+  * Update user: `PUT /user/username` sid, password, salt, crypted\_pw, hmac(session\_secret, `PUT /user/username sid salt crypted_pw`) - set password
+		* salt = random data
+		* key = hmac(session\_secret, salt)
+		* crypted\_pw = aes-cbc(key, password)
   * Destroy user: `DELETE /user/username` sid, hmac(session\_secret, `DELETE /user/username sid`) - delete said user
   * Create user: `POST /user/username` sid, hmac(session\_secret, `POST /user/username sid`) - create user with specified name
 
