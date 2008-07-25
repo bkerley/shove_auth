@@ -1,21 +1,25 @@
 class UserController < ApplicationController
-  before_filter :check_username
+  before_filter :check_username, :except=>[:create]
   
   def create
+    @username = params[:username]
+    return fail_403 unless @username
+    verify("POST /user/#{@username} %s")
+    
   end
 
   def update
+    salt = params[:salt]
+    crypted_pw = params[:crypted_pw]
+    verify("PUT /user/#{@username} %s #{salt} #{crypted_pw}")
   end
 
   def show
-    username = params[:id]
-    verify("GET /user/#{username} %s") or return
-    
-    user = Account.find_by_username username
+    verify("GET /user/#{@username} %s") or return
     
     respond_to do |wants|
-      wants.xml {  render :xml=>user.to_xml }
-      wants.json { render :json=>user.to_json }
+      wants.xml {  render :xml=>@user.to_xml }
+      wants.json { render :json=>@user.to_json }
     end
   end
 
