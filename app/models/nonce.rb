@@ -52,7 +52,8 @@ class Nonce < ActiveRecord::Base
     Base64.encode64(OpenSSL::Random.random_bytes(30)).chomp.tr('+/','-_')
   end
   
-  def self.load_nonce(sid, username, hmac)
+  def self.load_nonce(sid, username = nil, hmac = nil)
+    return false unless username && hmac
     user = Account.find_by_username(username)
     return false unless user
     nonce = find_by_sid(sid)
