@@ -1,12 +1,18 @@
 class Nonce < ActiveRecord::Base
-  before_create :creation_generator
+  before_validation :uid_populator
   belongs_to :account, :foreign_key => :user_id
+  
+  [:nonce, :session_secret, :sid].each do |a|
+    validates_uniqueness_of a, :allow_nil=>true
+    validates_length_of a, :is=>40, :allow_nil=>true
+  end
+  validates_numericality_of :user_id, :allow_nil=>true
   
   # create-time methods
   
-  def creation_generator
-    self.nonce = Nonce.rand_bytes
-    self.sid = Nonce.rand_bytes
+  def uid_populator
+    self.nonce ||= Nonce.rand_bytes
+    self.sid ||= Nonce.rand_bytes
   end
   
   def load_user(user, hmac)
