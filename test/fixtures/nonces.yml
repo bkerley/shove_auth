@@ -1,11 +1,11 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  nonce: MyString
-  sid: MyString
+  nonce: MyString1
+  sid: MyString1
   user_id: 
 
 two:
-  nonce: MyString
-  sid: MyString
+  nonce: MyString2
+  sid: MyString2
   user_id: 
