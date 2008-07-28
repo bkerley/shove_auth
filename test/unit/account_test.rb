@@ -10,7 +10,7 @@ class AccountTest < ActiveSupport::TestCase
       @account.save
     end
     
-    should 'have been created' do
+    should 'be created' do
       a = Account.find_by_username('bkerley')
       assert_equal a.id, @account.id
     end
