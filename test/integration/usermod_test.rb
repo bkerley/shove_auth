@@ -41,5 +41,27 @@ class UsermodTest < ActionController::IntegrationTest
         assert !ShoveAuth::login(tempname,'winner')
       end
     end
+    
+    context "as a non-admin" do
+      setup do
+        @c.login 'failure', 'failure'
+      end
+      should 'show myself' do
+        assert @c.user
+        assert_equal 'failure', @c.user.username
+      end
+      should 'change own password' do
+        @c.user.set_password 'bloat'
+        assert_equal :authenticated, ShoveAuth::login('failure', 'bloat')
+        @c.user.set_password 'failure'
+        assert_equal :authenticated, ShoveAuth::login('failure', 'failure')
+      end
+      should 'fail to create a user' do
+        assert_raise(ShoveAuth::Error){@c.create(Namegen.screenname + '_TEMP')}
+      end
+      should 'fail to load bryce' do
+        assert_nil @c['bryce']
+      end
+    end
   end
 end
