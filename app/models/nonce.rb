@@ -67,7 +67,7 @@ class Nonce < ActiveRecord::Base
   end
   
   def self.hmac(secret, message)
-    OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('SHA1'), secret, message)
+    return OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('SHA1'), secret, message)
   end
   
   def self.find_outdated
