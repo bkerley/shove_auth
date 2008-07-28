@@ -7,7 +7,7 @@ class UserController < ApplicationController
     return fail_403 unless @nonce.account.admin
     @username = params[:id]
     return fail_403 unless @username
-    return false unless verify_hmac("POST /user/#{@username} %s")
+    return fail_403 unless verify_hmac("POST /user/#{@username} %s")
     
     @user = Account.find_by_username @username
     if @user
@@ -30,7 +30,7 @@ class UserController < ApplicationController
   def update
     return fail_403 unless @nonce.account.admin || (@nonce.account.username == @username)
     password = params[:password]
-    return false unless verify_hmac("PUT /user/#{@username} %s #{password}")
+    return fail_403 unless verify_hmac("PUT /user/#{@username} %s #{password}")
     
     @user.password = password
     @user.save
@@ -42,7 +42,7 @@ class UserController < ApplicationController
   end
 
   def show
-    return false unless verify_hmac("GET /user/#{@username} %s")
+    return fail_403 unless verify_hmac("GET /user/#{@username} %s")
     
     respond_to do |wants|
       wants.xml {  render :xml=>@user.to_xml }
@@ -51,7 +51,7 @@ class UserController < ApplicationController
   end
 
   def destroy
-    return false unless verify_hmac("DELETE /user/#{params[:id]} %s")
+    return fail_403 unless verify_hmac("DELETE /user/#{params[:id]} %s")
     
     u = Account.find_by_username params[:id]
     u.destroy
@@ -70,11 +70,12 @@ class UserController < ApplicationController
     session_secret = Nonce.find_by_sid(sid).session_secret
     
     check = Nonce.hmac(session_secret, verifier)
+    
     return true if check == hmac
     
-    return fail_403
+    return false
   rescue
-    return fail_403
+    return false
   end
   
   def check_sid
