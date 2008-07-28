@@ -1,7 +1,9 @@
 class UserController < ApplicationController
   before_filter :check_username, :except=>[:create]
+  before_filter :check_sid
   
   def create
+    return fail_403 unless @nonce.account.admin
     @username = params[:id]
     return fail_403 unless @username
     result = verify_hmac("POST /user/#{@username} %s")
@@ -26,6 +28,7 @@ class UserController < ApplicationController
   end
 
   def update
+    return fail_403 unless @nonce.account.admin || (@nonce.account.username == @username)
     password = params[:password]
     result = verify_hmac("PUT /user/#{@username} %s #{password}")
     return false unless result
@@ -75,6 +78,12 @@ class UserController < ApplicationController
     return fail_403
   rescue
     return fail_403
+  end
+  
+  def check_sid
+    return fail_403 unless params[:session] and params[:session][:sid]
+    @nonce = Nonce.find_by_sid(params[:session][:sid])
+    return fail_403 unless @nonce
   end
   
   def check_username
