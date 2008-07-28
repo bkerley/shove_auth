@@ -4,18 +4,19 @@ class UserController < ApplicationController
   def create
     @username = params[:username]
     return fail_403 unless @username
-    verify("POST /user/#{@username} %s")
+    verify_hmac("POST /user/#{@username} %s")
     
   end
 
   def update
     salt = params[:salt]
     crypted_pw = params[:crypted_pw]
-    verify("PUT /user/#{@username} %s #{salt} #{crypted_pw}")
+    verify_hmac("PUT /user/#{@username} %s #{salt} #{crypted_pw}")
   end
 
   def show
-    verify("GET /user/#{@username} %s") or return
+    result =  verify_hmac("GET /user/#{@username} %s")
+    return false unless result
     
     respond_to do |wants|
       wants.xml {  render :xml=>@user.to_xml }
@@ -27,28 +28,26 @@ class UserController < ApplicationController
   end
   
   private
-  def verify(content)
+  def verify_hmac(content)
     sid = params[:session][:sid]
-    verifier = content.printf(sid)
+    verifier = sprintf(content, sid)
     hmac = params[:session][:hmac]
     session_secret = Nonce.find_by_sid(sid).session_secret
     
-    check = hmac(session_secret, verifier)
-    
+    check = Nonce.hmac(session_secret, verifier)
     return true if check == hmac
     
-    render :text=>'403 Forbidden', :status=>403
-    return false
+    return fail_403
   rescue
-    render :text=>'403 Forbidden', :status=>403
-    return false
+    return fail_403
   end
   
   def check_username
-    @username = params[:username]
+    @username = params[:id]
     return fail_403 unless @username
     @user = Account.find_by_username @username
     return fail_403 unless @user
+    return true
   end
   
   def fail_403
