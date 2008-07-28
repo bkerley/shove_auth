@@ -122,6 +122,8 @@ module ShoveAuth
         new_user.username = username
         new_user.save
       end
+    rescue ActiveResource::ForbiddenAccess
+      raise ShoveAuth::Error, "forbidden"
     end
     
     def user
