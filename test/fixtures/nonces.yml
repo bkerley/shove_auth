@@ -16,3 +16,10 @@ three:
   sid: qea8i1P2MkfgOTsYuv-lpALs7JOD5yZ3t3hQq4p6
   session_secret: qea8i1P2MkfgOTsYuv-lpALs7JOD5yZ3t3hQq4p6
   user_id: 500
+
+four:
+  id: 4
+  nonce: DfO6yDeIpchlafAllNQpxtlW8TdD7_urlt8mv8uc
+  sid: DfO6yDeIpchlafAllNQpxtlW8TdD7_urlt8mv8uc
+  session_secret: DfO6yDeIpchlafAllNQpxtlW8TdD7_urlt8mv8uc
+  user_id: 501
