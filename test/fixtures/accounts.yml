@@ -9,5 +9,6 @@ two:
   digest: MyString
 
 bryce:
+  id: 500
   username: bryce
   digest: tEvbLXKs+VKqOYf3r4jqVzyrQZE=

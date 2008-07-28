@@ -9,3 +9,10 @@ two:
   nonce: MyString2
   sid: MyString2
   user_id: 
+
+three:
+  id: 3
+  nonce: qea8i1P2MkfgOTsYuv-lpALs7JOD5yZ3t3hQq4p6
+  sid: qea8i1P2MkfgOTsYuv-lpALs7JOD5yZ3t3hQq4p6
+  session_secret: qea8i1P2MkfgOTsYuv-lpALs7JOD5yZ3t3hQq4p6
+  user_id: 500
