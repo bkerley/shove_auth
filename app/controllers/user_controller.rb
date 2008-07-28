@@ -2,10 +2,27 @@ class UserController < ApplicationController
   before_filter :check_username, :except=>[:create]
   
   def create
-    @username = params[:username]
+    @username = params[:id]
     return fail_403 unless @username
-    verify_hmac("POST /user/#{@username} %s")
+    result = verify_hmac("POST /user/#{@username} %s")
+    return false unless result
     
+    @user = Account.find_by_username @username
+    if @user
+      render :text=>'405 Method Not Allowed', :status=>405
+      return false
+    end
+    
+    @account = Account.new(:username=>@username)
+    respond_to do |format|
+      if @account.save
+        format.xml  { head :created }
+        format.json { head :created }
+      else
+        format.xml  { render :xml => @account.errors, :status => :unprocessable_entity }
+        format.json { render :json=> @account.errors, :status => :unprocessable_entity }
+      end
+    end
   end
 
   def update
