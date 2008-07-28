@@ -8,10 +8,6 @@ class ApplicationController < ActionController::Base
   
   filter_parameter_logging :password
   
-  def hmac(secret, message)
-    Nonce.hmac(secret, message)
-  end
-  
   def method_missing(methodname, *args)
    render :text=>'404 Not Found', :status=>404
   end
