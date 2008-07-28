@@ -107,4 +107,81 @@ class UserControllerTest < ActionController::TestCase
       end
     end
   end
+  
+  context 'without admin credentials' do
+    setup do
+      @nonce = Nonce.find(4)
+      @username = @nonce.account.username
+    end
+    
+    context 'show user' do
+      setup do
+        request_xml
+        get :show, {:id=>@username, :session=>{:sid=>@nonce.sid, :hmac=>Nonce.hmac(@nonce.session_secret, "GET /user/#{@username} #{@nonce.sid}")}}
+      end
+      
+      should_respond_with :success
+      should_respond_with_xml_for :account
+    end
+    
+    context 'changing own password' do
+      setup do
+        request_xml
+        @old_digest = @nonce.account.digest
+        @new_pass = Nonce.rand_bytes
+        put :update, {:id=>@username, :password=>@new_pass, 
+          :session=>{:sid=>@nonce.sid, :hmac=>Nonce.hmac(@nonce.session_secret, "PUT /user/#{@username} #{@nonce.sid} #{@new_pass}")}}
+      end
+      
+      should_respond_with :success
+      should 'change the digest' do
+        @nonce.account.reload
+        assert_not_equal @old_digest, @nonce.account.digest
+      end
+    end
+    
+    context 'changing other password' do
+      setup do
+        request_xml
+        @target = Account.find_by_username 'bryce'
+        @old_digest = @target.digest
+        @new_pass = Nonce.rand_bytes
+        put :update, {:id=>@target.username, :password=>@new_pass,
+          :session=>{:sid=>@nonce.sid, :hmac=>Nonce.hmac(@nonce.session_secret, "PUT /user/#{@target.username} #{@nonce.sid} #{@new_pass}")}}
+      end
+      
+      should_respond_with 403
+      should 'not change the digest' do
+        @target.reload
+        assert_equal @old_digest, @target.digest
+      end
+    end
+    
+    context 'create user' do
+      setup do
+        request_xml
+        @new_username = Namegen.screenname
+        post :create, {:id=>@new_username,
+          :session=>{:sid=>@nonce.sid, :hmac=>Nonce.hmac(@nonce.session_secret, "POST /user/#{@new_username} #{@nonce.sid}")}}
+      end
+      
+      should_respond_with 403
+      should 'not create the user' do
+        assert_nil Account.find_by_username(@new_username)
+      end
+    end
+    
+    context 'destroy user' do
+      setup do
+        request_xml
+        delete :destroy, {:id=>'bryce',
+          :session=>{:sid=>@nonce.sid, :hmac=>Nonce.hmac(@nonce.session_secret, "DELETE /user/failure #{@nonce.sid}")}}
+      end
+      
+      should_respond_with 403
+      should 'not destroy the user' do
+        assert Account.find_by_username('bryce')
+      end
+    end
+  end
 end
