@@ -1,6 +1,6 @@
 class UserController < ApplicationController
   before_filter :dehash_params
-  before_filter :check_username, :except=>[:create]
+  before_filter :check_username, :except=>:create
   before_filter :check_sid
   
   def create
@@ -81,7 +81,7 @@ class UserController < ApplicationController
   def check_sid
     return fail_403 unless params[:session] and params[:session][:sid]
     @nonce = Nonce.find_by_sid(params[:session][:sid])
-    return fail_403 unless @nonce
+    return fail_403 unless @nonce && @nonce.account
   end
   
   def check_username
