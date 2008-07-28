@@ -50,6 +50,16 @@ class UserController < ApplicationController
   end
 
   def destroy
+    result = verify_hmac("DELETE /user/#{params[:id]} %s")
+    return false unless result
+    
+    u = Account.find_by_username params[:id]
+    u.destroy
+    
+    respond_to do |wants|
+      wants.xml { head :ok }
+      wants.json { head :ok }
+    end
   end
   
   private
