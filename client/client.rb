@@ -68,6 +68,15 @@ module ShoveAuth
       end
     end
     
+    def destroy
+      hash = {:session=>{
+        :hmac=>hmac(@session.session_secret, "DELETE /user/#{self.username} #{@session.sid}"),
+        :sid=>@session.sid
+      }}
+      connection.delete(element_path(hash), self.class.headers)
+      self.freeze
+    end
+    
     def find_by_username(username)
       self.id = username
       path = element_path(:session=>{
@@ -83,7 +92,6 @@ module ShoveAuth
     
     def set_password(new_password)
       hmac = hmac(@session.session_secret, "PUT /user/#{self.username} #{@session.sid} #{new_password}")
-      puts hmac
       fields = {:password=>new_password, :session=>{:hmac=>hmac, :sid=>@session.sid}}.to_xml
       returning connection.put(element_path(prefix_options), fields, self.class.headers) do |response|
         load_attributes_from_response(response)
