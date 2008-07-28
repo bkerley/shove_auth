@@ -1,4 +1,5 @@
 class UserController < ApplicationController
+  before_filter :dehash_params
   before_filter :check_username, :except=>[:create]
   before_filter :check_sid
   
@@ -93,5 +94,10 @@ class UserController < ApplicationController
   def fail_403
     render :text=>'403 Forbidden', :status=>403
     return false
+  end
+  
+  def dehash_params
+    return true unless params[:hash]
+    params[:hash].each {|k,v| params[k] = v}
   end
 end
