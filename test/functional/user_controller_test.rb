@@ -28,4 +28,20 @@ class UserControllerTest < ActionController::TestCase
     end
   end
 
+  context 'with credentials' do
+    setup do
+      @nonce = Nonce.find(3)
+      @username = @nonce.account.username
+    end
+    
+    context 'show user' do
+      setup do
+        request_xml
+        get :show, {:id=>@username, :session=>{:sid=>@nonce.sid, :hmac=>Nonce.hmac(@nonce.session_secret, "GET /user/#{@username} #{@nonce.sid}")}}
+      end
+      
+      should_respond_with :success
+      should_respond_with_xml_for :account
+    end
+  end
 end
