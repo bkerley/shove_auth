@@ -44,7 +44,7 @@ class UserControllerTest < ActionController::TestCase
       should_respond_with_xml_for :account
     end
     
-    context 'update user' do
+    context 'changing own password' do
       setup do
         request_xml
         @old_digest = @nonce.account.digest
@@ -57,6 +57,23 @@ class UserControllerTest < ActionController::TestCase
       should 'have changed the digest' do
         @nonce.account.reload
         assert_not_equal @old_digest, @nonce.account.digest
+      end
+    end
+    
+    context 'changing other password' do
+      setup do
+        request_xml
+        @target = Account.find_by_username 'failure'
+        @old_digest = @target.digest
+        @new_pass = Nonce.rand_bytes
+        put :update, {:id=>@target.username, :password=>@new_pass,
+          :session=>{:sid=>@nonce.sid, :hmac=>Nonce.hmac(@nonce.session_secret, "PUT /user/#{@target.username} #{@nonce.sid} #{@new_pass}")}}
+      end
+      
+      should_respond_with :success
+      should 'have changed the digest' do
+        @target.reload
+        assert_not_equal @old_digest, @target.digest
       end
     end
     
