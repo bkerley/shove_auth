@@ -9,13 +9,21 @@ class UserController < ApplicationController
   end
 
   def update
-    salt = params[:salt]
-    crypted_pw = params[:crypted_pw]
-    verify_hmac("PUT /user/#{@username} %s #{salt} #{crypted_pw}")
+    password = params[:password]
+    result = verify_hmac("PUT /user/#{@username} %s #{password}")
+    return false unless result
+    
+    @user.password = password
+    @user.save
+    
+    respond_to do |wants|
+      wants.xml { head :ok }
+      wants.json { head :ok }
+    end
   end
 
   def show
-    result =  verify_hmac("GET /user/#{@username} %s")
+    result = verify_hmac("GET /user/#{@username} %s")
     return false unless result
     
     respond_to do |wants|
