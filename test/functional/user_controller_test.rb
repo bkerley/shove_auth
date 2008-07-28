@@ -54,8 +54,8 @@ class UserControllerTest < ActionController::TestCase
       end
       
       should_respond_with :success
-      should_respond_with_xml_for :account
       should 'have changed the digest' do
+        @nonce.account.reload
         assert_not_equal @old_digest, @nonce.account.digest
       end
     end
