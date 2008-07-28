@@ -28,7 +28,7 @@ class UserControllerTest < ActionController::TestCase
     end
   end
 
-  context 'with credentials' do
+  context 'with admin credentials' do
     setup do
       @nonce = Nonce.find(3)
       @username = @nonce.account.username
@@ -64,7 +64,8 @@ class UserControllerTest < ActionController::TestCase
       setup do
         request_xml
         @new_username = Namegen.screenname
-        post :create, {:id=>@new_username, :session=>{:sid=>@nonce.sid, :hmac=>Nonce.hmac(@nonce.session_secret, "POST /user/#{@new_username} #{@nonce.sid}")}}
+        post :create, {:id=>@new_username,
+          :session=>{:sid=>@nonce.sid, :hmac=>Nonce.hmac(@nonce.session_secret, "POST /user/#{@new_username} #{@nonce.sid}")}}
       end
       
       should_respond_with :created
@@ -72,6 +73,20 @@ class UserControllerTest < ActionController::TestCase
         user = Account.find_by_username @new_username
         assert user
         assert_valid user
+      end
+    end
+    
+    context 'destroy user' do
+      setup do
+        request_xml
+        delete :destroy, {:id=>'failure',
+          :session=>{:sid=>@nonce.sid, :hmac=>Nonce.hmac(@nonce.session_secret, "DELETE /user/failure #{@nonce.sid}")}}
+      end
+      
+      should_respond_with :ok
+      should 'destroy the user' do
+        user = Account.find_by_username 'failure'
+        assert_nil user
       end
     end
   end

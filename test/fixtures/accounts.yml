@@ -12,3 +12,10 @@ bryce:
   id: 500
   username: bryce
   digest: tEvbLXKs+VKqOYf3r4jqVzyrQZE=
+  admin: true
+
+failure:
+  id: 501
+  username: failure
+  digest: qea8i1P2MkfgOTsYuv-lpALs7JOD5yZ3t3hQq4p6
+  admin: false
