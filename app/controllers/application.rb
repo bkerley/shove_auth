@@ -1,7 +1,7 @@
 # Filters added to this controller apply to all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
-include HoptoadNotifier::Catcher
 class ApplicationController < ActionController::Base
+  include HoptoadNotifier::Catcher
   helper :all # include all helpers, all the time
 
   layout 'scaffold'
@@ -15,6 +15,7 @@ class ApplicationController < ActionController::Base
   def require_login
     unless session[:account]
       redirect_to new_admin_path, :status=>403
+      return false
     end
   end
   
@@ -23,6 +24,7 @@ class ApplicationController < ActionController::Base
       flash[:notice] = "You're not allowed to do that."
       redirect_path = session[:account] ? admin_path(session[:account]) : new_admin_path
       redirect_to redirect_path, :status=>403
+      return false
     end
   end
 end
