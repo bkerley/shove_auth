@@ -21,7 +21,8 @@ class ApplicationController < ActionController::Base
   def require_admin
     unless session[:account] && Account.find(session[:account]).admin
       flash[:notice] = "You're not allowed to do that."
-      redirect_to admin_path(session[:account]), :status=>403
+      redirect_path = session[:account] ? admin_path(session[:account]) : new_admin_path
+      redirect_to redirect_path, :status=>403
     end
   end
 end
