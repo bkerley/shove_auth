@@ -57,7 +57,7 @@ module ShoveAuth
     end
     
     def create
-      self.id = username
+      self.id = CGI.escape(username).gsub('.','%2e')
       hash = {:session=>{
         :hmac=>hmac(@session.session_secret, "POST /user/#{self.username} #{@session.sid}"),
         :sid=>@session.sid
@@ -78,13 +78,13 @@ module ShoveAuth
     end
     
     def find_by_username(username)
-      self.id = username
+      self.id = CGI.escape(username).gsub('.','%2e')
       path = element_path(:session=>{
         :hmac=>hmac(@session.session_secret, "GET /user/#{username} #{@session.sid}"),
         :sid=>@session.sid
       })
       load connection.get(path)
-      self.id = CGI.escape(self.username)
+      self.id = CGI.escape(self.username).gsub('.','%2e')
       return self
     rescue ActiveResource::ForbiddenAccess
       return nil
