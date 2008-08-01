@@ -40,6 +40,14 @@ class UsermodTest < ActionController::IntegrationTest
         @c[tempname].destroy
         assert !ShoveAuth::login(tempname,'winner')
       end
+      should 'work with a user with an email address as their username' do
+        tempname = Namegen.screenname + '@worldmedia._TEMP'
+        @c.create tempname
+        @c[tempname].set_password 'emailah'
+        assert_equal :authenticated, ShoveAuth::login(tempname, 'emailah')
+        @c[tempname].destroy
+        assert !ShoveAuth::login(tempname, 'emailiah')
+      end
     end
     
     context "as a non-admin" do
