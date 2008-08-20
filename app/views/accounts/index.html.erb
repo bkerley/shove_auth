@@ -16,7 +16,6 @@
 			map{|v|"<span id='membership_#{account.id}_#{v.id}'>#{h(v.inspect)}</span>"}.join(' ')
 		%>
 	</td>
-    <td><%= link_to 'Show', account %></td>
     <td><%= link_to 'Edit', edit_account_path(account) %></td>
     <td><%= link_to 'Destroy', account, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
