@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :memberships
+
   map.resources :session
   map.resources :user
   map.resources :nonces
