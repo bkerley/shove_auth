@@ -1,5 +1,7 @@
+// script.aculo.us dragdrop.js v1.8.1, Wed Aug 20 11:30:23 -0400 2008
+
 // Copyright (c) 2005-2008 Thomas Fuchs (http://script.aculo.us, http://mir.aculo.us)
-//           (c) 2005-2007 Sammi Williams (http://www.oriontransfer.co.nz, sammi@oriontransfer.co.nz)
+//           (c) 2005-2008 Sammi Williams (http://www.oriontransfer.co.nz, sammi@oriontransfer.co.nz)
 // 
 // script.aculo.us is freely distributable under the terms of an MIT-style license.
 // For details, see the script.aculo.us web site: http://script.aculo.us/
@@ -121,7 +123,7 @@ var Droppables = {
     if(this.last_active)
       this.deactivate(this.last_active);
   }
-}
+};
 
 var Draggables = {
   drags: [],
@@ -218,7 +220,7 @@ var Draggables = {
       ).length;
     });
   }
-}
+};
 
 /*--------------------------------------------------------------------------*/
 
@@ -331,8 +333,8 @@ var Draggable = Class.create({
     
     if(this.options.ghosting) {
       this._clone = this.element.cloneNode(true);
-      this.element._originallyAbsolute = (this.element.getStyle('position') == 'absolute');
-      if (!this.element._originallyAbsolute)
+      this._originallyAbsolute = (this.element.getStyle('position') == 'absolute');
+      if (!this._originallyAbsolute)
         Position.absolutize(this.element);
       this.element.parentNode.insertBefore(this._clone, this.element);
     }
@@ -403,9 +405,9 @@ var Draggable = Class.create({
     }
 
     if(this.options.ghosting) {
-      if (!this.element._originallyAbsolute)
+      if (!this._originallyAbsolute)
         Position.relativize(this.element);
-      delete this.element._originallyAbsolute;
+      delete this._originallyAbsolute;
       Element.remove(this._clone);
       this._clone = null;
     }
@@ -478,10 +480,10 @@ var Draggable = Class.create({
       } else {
       if(Object.isArray(this.options.snap)) {
         p = p.map( function(v, i) {
-          return (v/this.options.snap[i]).round()*this.options.snap[i] }.bind(this))
+          return (v/this.options.snap[i]).round()*this.options.snap[i] }.bind(this));
       } else {
         p = p.map( function(v) {
-          return (v/this.options.snap).round()*this.options.snap }.bind(this))
+          return (v/this.options.snap).round()*this.options.snap }.bind(this));
       }
     }}
     
@@ -560,7 +562,7 @@ var Draggable = Class.create({
         H = documentElement.clientHeight;
       } else {
         W = body.offsetWidth;
-        H = body.offsetHeight
+        H = body.offsetHeight;
       }
     }
     return { top: T, left: L, width: W, height: H };
@@ -608,7 +610,8 @@ var Sortable = {
   },
   
   destroy: function(element){
-    var s = Sortable.options(element);
+    element = $(element);
+    var s = Sortable.sortables[element.id];
     
     if(s) {
       Draggables.removeObserver(s.element);
@@ -689,14 +692,14 @@ var Sortable = {
       tree:        options.tree,
       hoverclass:  options.hoverclass,
       onHover:     Sortable.onHover
-    }
+    };
     
     var options_for_tree = {
       onHover:      Sortable.onEmptyHover,
       overlap:      options.overlap,
       containment:  options.containment,
       hoverclass:   options.hoverclass
-    }
+    };
 
     // fix for gecko engine
     Element.cleanWhitespace(element); 
@@ -851,11 +854,11 @@ var Sortable = {
         children: [],
         position: parent.children.length,
         container: $(children[i]).down(options.treeTag)
-      }
+      };
       
       /* Get the element containing the children and recurse over it */
       if (child.container)
-        this._tree(child.container, options, child)
+        this._tree(child.container, options, child);
       
       parent.children.push (child);
     }
@@ -880,7 +883,7 @@ var Sortable = {
       children: [],
       container: element,
       position: 0
-    }
+    };
     
     return Sortable._tree(element, options, root);
   },
@@ -940,14 +943,14 @@ var Sortable = {
       }).join('&');
     }
   }
-}
+};
 
 // Returns true if child is contained within element
 Element.isParent = function(child, element) {
   if (!child.parentNode || child == element) return false;
   if (child.parentNode == element) return true;
   return Element.isParent(child.parentNode, element);
-}
+};
 
 Element.findChildren = function(element, only, recursive, tagName) {   
   if(!element.hasChildNodes()) return null;
@@ -965,8 +968,8 @@ Element.findChildren = function(element, only, recursive, tagName) {
   });
 
   return (elements.length>0 ? elements.flatten() : []);
-}
+};
 
 Element.offsetSize = function (element, type) {
   return element['offset' + ((type=='vertical' || type=='height') ? 'Height' : 'Width')];
-}
+};
