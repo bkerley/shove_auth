@@ -1,0 +1,36 @@
+a.delete_group:link {
+	text-decoration: none;
+	background-color: #fee;
+	color: #f88;
+	font-weight: bold;
+	padding: 2px;
+}
+
+a.delete_group:hover {
+	background-color: #f00;
+	color: #fff;
+}
+
+.memberships span:hover {
+	background-color: #fdd;
+}
+
+a.add_group:link {
+	text-decoration: none;
+	background-color: #efe;
+	color: #080;
+	font-weight: bold;
+	padding: 2px;
+}
+
+a.add_group:hover {
+	background-color: #0f0;
+	color: #000;
+}
+
+form.add_form {
+	position: absolute;
+	z-index: 2;
+	border: 1px solid #aaa;
+	background-color: #eee;
+}
