@@ -43,14 +43,14 @@ function show_add_ui(user_id) {
 		Effect.Fade(group_form, {duration: 0.5, afterFinish: function(f){group_form.remove();}});
 	});
 	go_button.observe('click', function(f) {
-		var name = group_name.value;
+		var name = group_name.value.gsub(/^%/, '');
 		ajax_addition(user_id, name, function(group_id) {
 			Effect.Fade(group_form, {duration: 0.5, afterFinish: function(f){group_form.remove();}});
 			var new_span = 
 				Builder.node('span', {id: id_for_user_and_group('membership', user_id, group_id)}, '%'+name);
 			
 			memberships.select('.add_group')[0].insert({before: new_span});
-			connect_group(new_span);
+			connect_group(new_span, user_id);
 		});
 	})
 }
