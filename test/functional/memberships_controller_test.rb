@@ -27,4 +27,6 @@ class MembershipsControllerTest < ActionController::TestCase
       should_respond_with 403
     end
   end
+  
+  should_eventually 'have credentialed tests'
 end
