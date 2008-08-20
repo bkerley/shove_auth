@@ -5,10 +5,11 @@
 
   <p>
     <%= f.label :account_id %><br />
-    <%= f.text_field :account_id %>
+    <%= select :membership, :account_id,
+      Account.all.collect{|s|["#{s.username}", s.id]}%>
   </p>
   <p>
-    <%= f.label :group %><br />
+    <%= f.label :group %> (do not include the percent % sign)<br />
     <%= f.text_field :group %>
   </p>
   <p>
