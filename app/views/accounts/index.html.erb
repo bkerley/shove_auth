@@ -11,7 +11,11 @@
   <tr>
     <td><%=h account.username %></td>
     <td><%=h account.admin ? 'Administrator' : 'Not Admin' %></td>
-	<td><%=h account.memberships.map(&:inspect).join(' ') %></td>
+	<td class='memberships' id='memberships_<%=h account.id %>'>
+		<%= account.memberships.
+			map{|v|"<span id='membership_#{account.id}_#{v.id}'>#{h(v.inspect)}</span>"}.join(' ')
+		%>
+	</td>
     <td><%= link_to 'Show', account %></td>
     <td><%= link_to 'Edit', edit_account_path(account) %></td>
     <td><%= link_to 'Destroy', account, :confirm => 'Are you sure?', :method => :delete %></td>
@@ -22,3 +26,8 @@
 <br />
 
 <%= link_to 'New account', new_account_path %>
+
+<script src="javascripts/membership_editor.js" type="text/javascript" ></script>
+<script type="text/javascript">
+	locate_memberships();
+</script>
