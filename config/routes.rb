@@ -1,5 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :memberships
+  map.resources :memberships, :collection=>{:groups=>:get}
 
   map.resources :session
   map.resources :user
