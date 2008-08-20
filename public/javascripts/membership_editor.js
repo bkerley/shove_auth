@@ -32,7 +32,19 @@ function locate_memberships() {
 }
 
 function show_add_ui(user_id) {
-	alert("Add a group to "+user_id);
+	var group_name = Builder.node('input', {type:'text'});
+	var go_button = Builder.node('input', {type:'button', name:'add', value:'+'});
+	var autocompleted_names = Builder.node('div');
+	var group_form = Builder.node('form', {className: 'add_form', style:'display: none'}, [group_name, autocompleted_names, go_button]);
+	$(id_for_user('memberships', user_id)).appendChild(group_form);
+	new Ajax.Request('/memberships/groups.json', {
+		method: 'get',
+		evalJSON: true,
+		onSuccess: function(transport) {
+			new Autocompleter.Local(group_name, autocompleted_names, transport.responseJSON);
+		}
+	})
+	Effect.Appear(group_form, {duration: 0.5});
 }
 
 function remove_group(user_id, group_id) {
