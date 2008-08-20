@@ -2,6 +2,7 @@ require 'test_helper'
 
 class AccountTest < ActiveSupport::TestCase
   should_have_many :nonces
+  should_have_many :memberships
   
   context 'a new account' do
     setup do
