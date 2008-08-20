@@ -4,12 +4,14 @@
   <tr>
     <th>Username</th>
     <th>Admin?</th>
+	<th>Memberships</th>
   </tr>
 
 <% for account in @accounts %>
   <tr>
     <td><%=h account.username %></td>
     <td><%=h account.admin ? 'Administrator' : 'Not Admin' %></td>
+	<td><%=h account.memberships.map(&:inspect).join(' ') %></td>
     <td><%= link_to 'Show', account %></td>
     <td><%= link_to 'Edit', edit_account_path(account) %></td>
     <td><%= link_to 'Destroy', account, :confirm => 'Are you sure?', :method => :delete %></td>
