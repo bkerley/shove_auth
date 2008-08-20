@@ -1,45 +1,30 @@
 require 'test_helper'
 
 class MembershipsControllerTest < ActionController::TestCase
-  test "should get index" do
-    get :index
-    assert_response :success
-    assert_not_nil assigns(:memberships)
-  end
-
-  test "should get new" do
-    get :new
-    assert_response :success
-  end
-
-  test "should create membership" do
-    assert_difference('Membership.count') do
-      post :create, :membership => { }
+  context 'without credentials' do
+    context 'on GET' do
+      setup do
+        get :show, :id=>'invalid'
+      end
+      should_respond_with 403
     end
-
-    assert_redirected_to membership_path(assigns(:membership))
-  end
-
-  test "should show membership" do
-    get :show, :id => memberships(:one).id
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get :edit, :id => memberships(:one).id
-    assert_response :success
-  end
-
-  test "should update membership" do
-    put :update, :id => memberships(:one).id, :membership => { }
-    assert_redirected_to membership_path(assigns(:membership))
-  end
-
-  test "should destroy membership" do
-    assert_difference('Membership.count', -1) do
-      delete :destroy, :id => memberships(:one).id
+    context 'on PUT' do
+      setup do
+        put :update, :id=>'invalid'
+      end
+      should_respond_with 403
     end
-
-    assert_redirected_to memberships_path
+    context 'on DELETE' do
+      setup do
+        put :destroy, :id=>'invalid'
+      end
+      should_respond_with 403
+    end
+    context 'on POST' do
+      setup do
+        post :create, :id=>'invalid'
+      end
+      should_respond_with 403
+    end
   end
 end
