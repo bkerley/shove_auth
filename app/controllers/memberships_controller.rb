@@ -1,4 +1,6 @@
 class MembershipsController < ApplicationController
+  protect_from_forgery
+  before_filter :require_admin
   # GET /memberships
   # GET /memberships.xml
   def index
