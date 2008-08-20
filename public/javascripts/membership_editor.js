@@ -70,19 +70,24 @@ function ajax_removal(user_id, group_id, callback) {
 			authenticity_token:($('csrf_token').value)
 		},
 		method: 'delete',
-		onSuccess: callback()
+		evalJSON: true,
+		onSuccess: callback
 	});
 }
 
 function ajax_addition(user_id, group_name, callback) {
 	new Ajax.Request('/memberships.json', {
 		method: 'post',
+		evalJSON: true,
 		parameters: {
 			'membership[account_id]': user_id, 
 			'membership[group]': group_name,
 			authenticity_token:($('csrf_token').value)
 		},
-		onSuccess: function(transport) {callback(transport.responseJSON.id);}
+		onSuccess: function(transport) {		
+			var response = transport.responseJSON.membership;
+			callback(response.id);
+		}
 	});
 }
 
