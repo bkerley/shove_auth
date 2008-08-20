@@ -8,7 +8,16 @@ class MembershipsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
+      format.json { render :json => @memberships }
       format.xml  { render :xml => @memberships }
+    end
+  end
+
+  def groups
+    @groups = Membership.groups
+    respond_to do |wants|
+      wants.json { render :json=>@groups }
+      wants.xml { render :xml=>@groups }
     end
   end
 
