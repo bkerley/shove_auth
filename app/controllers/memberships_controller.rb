@@ -29,6 +29,7 @@ class MembershipsController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @membership }
+      format.json  { render :json => @membership }
     end
   end
 
@@ -58,6 +59,7 @@ class MembershipsController < ApplicationController
         flash[:notice] = 'Membership was successfully created.'
         format.html { redirect_to(@membership) }
         format.xml  { render :xml => @membership, :status => :created, :location => @membership }
+        format.json { render :json=>@membership, :status => :created, :location => @membership }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @membership.errors, :status => :unprocessable_entity }
@@ -91,6 +93,7 @@ class MembershipsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(memberships_url) }
       format.xml  { head :ok }
+      format.json { head :ok }
     end
   end
 end
