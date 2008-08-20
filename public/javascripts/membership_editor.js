@@ -37,6 +37,10 @@ function show_add_ui(user_id) {
 
 function remove_group(user_id, group_id) {
 	alert("Removing user "+user_id+" from group "+group_id);
+	var group_element = $(id_for_user_and_group('membership', user_id, group_id));
+	var effect = Effect.Fade(group_element, {
+		afterFinish: function(f){ group_element.remove(); }
+	});
 }
 
 function id_for_user_and_group(prefix, user_id, group_id) {
