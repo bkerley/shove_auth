@@ -60,7 +60,9 @@ class AccountsController < ApplicationController
   # PUT /accounts/1.xml
   def update
     @account = Account.find(params[:id])
-
+    if params[:account][:password].blank?
+      params[:account].delete :password
+    end
     respond_to do |format|
       if @account.update_attributes(params[:account])
         flash[:notice] = 'Account was successfully updated.'
