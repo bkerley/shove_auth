@@ -3,6 +3,7 @@ require 'test_helper'
 class AccountTest < ActiveSupport::TestCase
   should_have_many :nonces
   should_have_many :memberships
+  should_require_unique_attributes :username
   
   context 'a new account' do
     setup do
