@@ -1,5 +1,6 @@
 class Account < ActiveRecord::Base
   has_many :nonces, :dependent=>:destroy, :foreign_key=>'user_id'
+  validates_uniqueness_of :username
   
   def password
   end
