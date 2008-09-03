@@ -6,7 +6,7 @@ class LegacyFields < ActiveRecord::Migration
     adder[:company_id, :integer]
     adder[:first_name, :string]
     adder[:last_name, :string]
-    adder[:admin, :boolean]
+    adder[:legacy_admin, :boolean]
   end
 
   def self.down
@@ -15,6 +15,6 @@ class LegacyFields < ActiveRecord::Migration
     dropper[:company_id, :integer]
     dropper[:first_name, :string]
     dropper[:last_name, :string]
-    dropper[:admin, :boolean]
+    dropper[:legacy_admin, :boolean]
   end
 end
