@@ -10,7 +10,7 @@ class LegacyFields < ActiveRecord::Migration
   end
 
   def self.down
-    dropper = proc {|f| drop_column :accounts, f}
+    dropper = proc {|f| remove_column :accounts, f}
     dropper[:token, :string]
     dropper[:company_id, :integer]
     dropper[:first_name, :string]

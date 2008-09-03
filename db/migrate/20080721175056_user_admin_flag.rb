@@ -4,6 +4,6 @@ class UserAdminFlag < ActiveRecord::Migration
   end
 
   def self.down
-    drop_column :accounts, :admin
+    remove_column :accounts, :admin
   end
 end
