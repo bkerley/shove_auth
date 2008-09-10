@@ -20,6 +20,9 @@ class AccessTest < ActionController::IntegrationTest
       should "be allowed to appropriate resources" do
         assert @c.user.access?('acl://poop')
       end
+      should "be forbidden from appropriate resources" do
+        assert !(@c.user.access?('acl://toilet'))
+      end
     end
   end
 end
