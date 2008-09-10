@@ -1,13 +1,9 @@
 shove_auth
 ==========
 
-shove_auth is a centralized authentication repository for webapps, using
+shove\_auth is a centralized authentication repository for webapps, using
 the HMAC protocol to verify passwords without any plaintext passwords at
 rest or in transit.
-
-SHA1 is the digest used. SHA512 is a more secure choice but not available
-everywhere, and in my opinion shove_auth SHA1 is secure enough for our
-uses.
 
 Concepts and variables
 ----------------------
@@ -21,6 +17,9 @@ Concepts and variables
 	* the current sid (even if this is already included in the action URL)
 	* any arguments (such as the password for update user)
 	* the output of the hmac function is passed as the hmac request parameter
+* legacy object - client-side object for the benefit of push2.  If you don't
+    know what that is, ignore it.  Legacy features will be removed in the
+    future.
 
 REST protocol
 -------------

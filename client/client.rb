@@ -97,6 +97,32 @@ module ShoveAuth
         load_attributes_from_response(response)
       end
     end
+    
+    def to_legacy_object
+      return LegacyUser.new do |u|
+        # different names
+        u.admin = self.legacy_admin
+        u.email = self.username
+        # same names
+        %w{company_id token first_name last_name created_at updated_at}.each{|f| u.send("#{f}=", self.send(f))}
+      end
+    end
+  end
+  
+  class LegacyUser
+    %w{company_id email password token first_name last_name permission admin created_at updated_at}.each{|a|attr_accessor a.to_sym}
+    
+    def initialize
+      yield self
+    end
+    
+    def to_legacy_session
+      session = {}
+      session[:token] = self.token
+      session[:user] = self
+      session[:company_id] = self.company_id
+    end
+    
   end
   
   class Client
