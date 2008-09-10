@@ -10,7 +10,7 @@
 <% for nonce in @nonces %>
   <tr>
 	  <td><%=h nonce.state %></td>
-    <td><%=h nonce.account ? "#{nonce.account.username} / #{truncate(nonce.session_secret, 10)}" : truncate(nonce.nonce, 10) %></td>
+    <td><%=h nonce.account ? "#{nonce.account.username} / #{truncate(nonce.session_secret, :length=>10)}" : truncate(nonce.nonce, :length=>10) %></td>
     <td><%=h nonce.sid %></td>
     <td><%= link_to 'Destroy', nonce, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
