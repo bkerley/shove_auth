@@ -6,7 +6,7 @@ class Aclpart < ActiveRecord::Base
   end
   
   def self.concatenated
-    self.find(:all, :order=>"order asc, id asc").map(&:body).join("\n")
+    self.find(:all, :order=>"`order` asc, id asc").map(&:body).join("\n")
   end
   
   def syntax_check
