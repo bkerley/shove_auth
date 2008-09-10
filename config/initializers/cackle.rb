@@ -1,0 +1,1 @@
+CACKLE = CackleShim.new
