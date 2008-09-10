@@ -1,0 +1,24 @@
+<h1>Listing aclparts</h1>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Order</th>
+    <th>Body</th>
+  </tr>
+
+<% for aclpart in @aclparts %>
+  <tr>
+    <td><%=h aclpart.title %></td>
+    <td><%=h aclpart.order %></td>
+    <td><%=h aclpart.body %></td>
+    <td><%= link_to 'Show', aclpart %></td>
+    <td><%= link_to 'Edit', edit_aclpart_path(aclpart) %></td>
+    <td><%= link_to 'Destroy', aclpart, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New aclpart', new_aclpart_path %>
