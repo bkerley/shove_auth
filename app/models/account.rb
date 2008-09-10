@@ -18,6 +18,12 @@ class Account < ActiveRecord::Base
     return self.digest == digest
   end
   
+  def acl_groups
+    ms_list = self.memberships.map(&:inspect)
+    ms_list.unshift self.username
+    return ms_list
+  end
+  
   def self.digest(username, password)
     sha1 = OpenSSL::Digest::Digest.new('SHA1')
     sha1 << username << password
