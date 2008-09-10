@@ -4,5 +4,6 @@
 <ul>
 	<li><%= link_to "Account list", accounts_path %> - create and destroy users, reset passwords</li>
 	<li><%= link_to "Nonce list", nonces_path %> - recent login sessions</li>
+	<li><%= link_to "Access control lists", aclparts_path %> - control access for users and groups</li>
 	<li><%= link_to "Log out", admin_path(@u.id), :method=>:delete %></li>
 </ul>

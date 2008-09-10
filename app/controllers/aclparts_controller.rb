@@ -1,4 +1,6 @@
 class AclpartsController < ApplicationController
+  protect_from_forgery
+  before_filter :require_admin
   # GET /aclparts
   # GET /aclparts.xml
   def index
