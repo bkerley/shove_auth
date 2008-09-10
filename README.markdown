@@ -41,6 +41,8 @@ REST protocol
   * Update user: `PUT /user/username` sid, password, hmac(session\_secret, `PUT /user/username sid password`) - set password
   * Destroy user: `DELETE /user/username` sid, hmac(session\_secret, `DELETE /user/username sid`) - delete said user
   * Create user: `POST /user/username` sid, hmac(session\_secret, `POST /user/username sid`) - create user with specified name
+* ACL checking, no hmac needed
+  * Check access: `GET /access/` sid, resource\_selector - 200 when allowed, 403 when not
 
 Protocol security
 -----------------
