@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :aclparts
+
   map.resources :memberships, :collection=>{:groups=>:get}
 
   map.resources :session
