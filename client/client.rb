@@ -28,7 +28,13 @@ module ShoveAuth
     self.collection_name = 'session'
 
     def create
-      returning connection.post(collection_path, to_xml, self.class.headers) do |response|
+      encoded = nil
+      if methods.include? :to_xml
+        encoded = to_xml
+      else
+        encoded = encode
+      end
+      returning connection.post(collection_path, encoded, self.class.headers) do |response|
         load_attributes_from_response(response)
         self.id = CGI.escape(self.sid)
       end
