@@ -48,7 +48,6 @@ module ShoveAuth
     rescue ActiveResource::ForbiddenAccess
       return false
     end
-
   end
   class User < ActiveResource::Base
     include ShoveAuth
@@ -112,6 +111,13 @@ module ShoveAuth
         # same names
         %w{company_id token first_name last_name created_at updated_at}.each{|f| u.send("#{f}=", self.send(f))}
       end
+    end
+    
+    def access?(resource)
+      result = connection.send(:http).head("/access?#{{:sid=>@session.sid, :resource_selector=>resource}.to_query}")
+
+      return true if result.code.to_i == 200
+      return false
     end
   end
   
