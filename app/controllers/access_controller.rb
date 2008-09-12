@@ -3,7 +3,9 @@ class AccessController < ApplicationController
     sid = params[:sid]
     resource_selector = params[:resource_selector]
     
-    a = Nonce.find_by_sid(sid).account
+    return fail_403 unless nonce = Nonce.find_by_sid
+    return fail_403 unless a = nonce.account 
+    
     result = CACKLE.test(a, resource_selector)
     
     return(render :text=>'200 OK', :status=>200) if result
