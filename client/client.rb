@@ -151,7 +151,7 @@ module ShoveAuth
     end
     
     def [](username)
-      return User[@session].find_by_username username
+      return User[@session].find_by_username(username)
     end
     
     def create(username)
