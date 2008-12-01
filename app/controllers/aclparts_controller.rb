@@ -1,6 +1,7 @@
 class AclpartsController < ApplicationController
   protect_from_forgery
   before_filter :require_admin
+  cache_sweeper :acl_sweeper, :except=>[:index, :show]
   # GET /aclparts
   # GET /aclparts.xml
   def index
