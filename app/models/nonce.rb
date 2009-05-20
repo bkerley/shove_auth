@@ -71,6 +71,6 @@ class Nonce < ActiveRecord::Base
   end
   
   def self.find_outdated
-    self.find(:all, :conditions=>['created_at < ?', 24.hours.ago])
+    self.find(:all, :conditions=>['created_at < ?', 7.days.ago])
   end
 end
